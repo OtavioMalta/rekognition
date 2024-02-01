@@ -30,4 +30,5 @@ public interface IFaceAuthenticationController {
             @ApiResponse(responseCode = "500", description = "Erro interno sem causa mapeada", content = @Content)
     })
     ResponseEntity<String> saveNewPhoto(@Parameter(description = "Face to be saved in S3") MultipartFile photo) throws Exception;
+    
 }

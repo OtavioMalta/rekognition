@@ -14,15 +14,15 @@
 	</classpathentry>
 	<classpathentry kind="src" output="target/test-classes" path="src/test/java">
 		<attributes>
+			<attribute name="test" value="true"/>
 			<attribute name="optional" value="true"/>
 			<attribute name="maven.pomderived" value="true"/>
-			<attribute name="test" value="true"/>
 		</attributes>
 	</classpathentry>
 	<classpathentry excluding="**" kind="src" output="target/test-classes" path="src/test/resources">
 		<attributes>
-			<attribute name="maven.pomderived" value="true"/>
 			<attribute name="test" value="true"/>
+			<attribute name="maven.pomderived" value="true"/>
 			<attribute name="optional" value="true"/>
 		</attributes>
 	</classpathentry>
@@ -43,9 +43,46 @@
 	</classpathentry>
 	<classpathentry kind="src" output="target/test-classes" path="target/generated-test-sources/test-annotations">
 		<attributes>
-			<attribute name="optional" value="true"/>
 			<attribute name="test" value="true"/>
+			<attribute name="optional" value="true"/>
 		</attributes>
 	</classpathentry>
+	<classpathentry kind="lib" path="C:/Users/Otavio/Downloads/javacv-platform-1.5.9-bin/javacv-platform-1.5.9-bin/javacpp.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Otavio/Downloads/javacv-platform-1.5.9-bin/javacv-platform-1.5.9-bin/javacpp-platform.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Otavio/Downloads/javacv-platform-1.5.9-bin/javacv-platform-1.5.9-bin/javacv.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Otavio/Downloads/javacv-platform-1.5.9-bin/javacv-platform-1.5.9-bin/opencv.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Otavio/Downloads/javacv-platform-1.5.9-bin/javacv-platform-1.5.9-bin/opencv-android-arm.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Otavio/Downloads/javacv-platform-1.5.9-bin/javacv-platform-1.5.9-bin/opencv-android-arm64.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Otavio/Downloads/javacv-platform-1.5.9-bin/javacv-platform-1.5.9-bin/opencv-android-x86.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Otavio/Downloads/javacv-platform-1.5.9-bin/javacv-platform-1.5.9-bin/opencv-android-x86_64.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Otavio/Downloads/javacv-platform-1.5.9-bin/javacv-platform-1.5.9-bin/opencv-ios-arm64.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Otavio/Downloads/javacv-platform-1.5.9-bin/javacv-platform-1.5.9-bin/opencv-ios-x86_64.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Otavio/Downloads/javacv-platform-1.5.9-bin/javacv-platform-1.5.9-bin/opencv-linux-arm64.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Otavio/Downloads/javacv-platform-1.5.9-bin/javacv-platform-1.5.9-bin/opencv-linux-armhf.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Otavio/Downloads/javacv-platform-1.5.9-bin/javacv-platform-1.5.9-bin/opencv-linux-ppc64le.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Otavio/Downloads/javacv-platform-1.5.9-bin/javacv-platform-1.5.9-bin/opencv-linux-x86.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Otavio/Downloads/javacv-platform-1.5.9-bin/javacv-platform-1.5.9-bin/opencv-linux-x86_64.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Otavio/Downloads/javacv-platform-1.5.9-bin/javacv-platform-1.5.9-bin/opencv-macosx-arm64.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Otavio/Downloads/javacv-platform-1.5.9-bin/javacv-platform-1.5.9-bin/opencv-macosx-x86_64.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Otavio/Downloads/javacv-platform-1.5.9-bin/javacv-platform-1.5.9-bin/opencv-platform.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Otavio/Downloads/javacv-platform-1.5.9-bin/javacv-platform-1.5.9-bin/opencv-windows-x86.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Otavio/Downloads/javacv-platform-1.5.9-bin/javacv-platform-1.5.9-bin/opencv-windows-x86_64.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Otavio/Downloads/javacv-platform-1.5.9-bin/javacv-platform-1.5.9-bin/openblas.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Otavio/Downloads/javacv-platform-1.5.9-bin/javacv-platform-1.5.9-bin/openblas-android-arm.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Otavio/Downloads/javacv-platform-1.5.9-bin/javacv-platform-1.5.9-bin/openblas-android-arm64.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Otavio/Downloads/javacv-platform-1.5.9-bin/javacv-platform-1.5.9-bin/openblas-android-x86.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Otavio/Downloads/javacv-platform-1.5.9-bin/javacv-platform-1.5.9-bin/openblas-android-x86_64.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Otavio/Downloads/javacv-platform-1.5.9-bin/javacv-platform-1.5.9-bin/openblas-ios-arm64.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Otavio/Downloads/javacv-platform-1.5.9-bin/javacv-platform-1.5.9-bin/openblas-ios-x86_64.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Otavio/Downloads/javacv-platform-1.5.9-bin/javacv-platform-1.5.9-bin/openblas-linux-arm64.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Otavio/Downloads/javacv-platform-1.5.9-bin/javacv-platform-1.5.9-bin/openblas-linux-armhf.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Otavio/Downloads/javacv-platform-1.5.9-bin/javacv-platform-1.5.9-bin/openblas-linux-ppc64le.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Otavio/Downloads/javacv-platform-1.5.9-bin/javacv-platform-1.5.9-bin/openblas-linux-x86.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Otavio/Downloads/javacv-platform-1.5.9-bin/javacv-platform-1.5.9-bin/openblas-linux-x86_64.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Otavio/Downloads/javacv-platform-1.5.9-bin/javacv-platform-1.5.9-bin/openblas-macosx-arm64.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Otavio/Downloads/javacv-platform-1.5.9-bin/javacv-platform-1.5.9-bin/openblas-macosx-x86_64.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Otavio/Downloads/javacv-platform-1.5.9-bin/javacv-platform-1.5.9-bin/openblas-platform.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Otavio/Downloads/javacv-platform-1.5.9-bin/javacv-platform-1.5.9-bin/openblas-windows-x86.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Otavio/Downloads/javacv-platform-1.5.9-bin/javacv-platform-1.5.9-bin/openblas-windows-x86_64.jar"/>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>
