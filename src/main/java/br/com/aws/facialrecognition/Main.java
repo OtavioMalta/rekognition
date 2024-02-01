@@ -11,9 +11,9 @@ import br.com.aws.facialrecognition.service.FaceCamAuthenticationService;
 @SpringBootApplication
 public class Main {
 	
-	 private final FaceCamAuthenticationService faceAuthenticationService;
+	/*  private final FaceCamAuthenticationService faceAuthenticationService;
 
-	    public Main(FaceCamAuthenticationService faceAuthenticationService) {
+	   public Main(FaceCamAuthenticationService faceAuthenticationService) {
 	        this.faceAuthenticationService = faceAuthenticationService;
 	    }
 
@@ -25,7 +25,7 @@ public class Main {
             // Obtenha a instância de FaceCamAuthenticationService do contexto Spring
             FaceCamAuthenticationService faceCamAuthenticationService = context.getBean(FaceCamAuthenticationService.class);
 
-            /*try {
+           try {
                 // Chame o método main da FaceCamAuthenticationService
                 faceCamAuthenticationService.openCam("ID_DA_FACE"); // substitua "ID_DA_FACE" pelo valor correto
             } catch (FrameGrabber.Exception e) {
@@ -34,6 +34,6 @@ public class Main {
             } finally {
                 // Feche o contexto Spring
                 context.close();
-            }*/
-        }
+            }
+        }*/
 }

@@ -15,6 +15,7 @@ import com.amazonaws.services.rekognition.model.CreateCollectionRequest;
 import com.amazonaws.services.rekognition.model.DetectFacesRequest;
 import com.amazonaws.services.rekognition.model.DetectFacesResult;
 import com.amazonaws.services.rekognition.model.Face;
+import com.amazonaws.services.rekognition.model.FaceDetail;
 import com.amazonaws.services.rekognition.model.FaceMatch;
 import com.amazonaws.services.rekognition.model.Image;
 import com.amazonaws.services.rekognition.model.IndexFacesRequest;
@@ -46,12 +47,16 @@ import java.io.FileOutputStream;
 import java.io.OutputStream;
 import java.math.BigDecimal;
 import java.nio.ByteBuffer;
+import java.nio.file.Files;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
 
 
 import lombok.extern.slf4j.Slf4j;
+import software.amazon.awssdk.core.SdkBytes;
+import software.amazon.awssdk.services.rekognition.RekognitionClient;
+import software.amazon.awssdk.services.rekognition.model.DetectFacesResponse;
 
 import org.bytedeco.opencv.opencv_core.Mat;
 import org.bytedeco.opencv.opencv_core.Point;
@@ -210,14 +215,30 @@ public class FaceCamAuthenticationService {
         if (result.getFaceDetails().isEmpty()) {
             return false;
         }
-
         if(result.getFaceDetails().size() > 1){
             throw new MultipleFacesException();
         }
+        FaceDetail faceDetail = result.getFaceDetails().get(0);
 
+        boolean hasGlasses = faceDetail.getEyeglasses().getValue();
+        System.out.println("Has glasses: " + hasGlasses);
+        if (hasGlasses) {
+            return false;
+        }
         return result.getFaceDetails().get(0).getConfidence() > 90;
     }
 
+     private static void detectarFace(RekognitionClient rekognitionClient, String caminhoImagem) {
+        try {
+            // Ler a imagem como bytes
+            SdkBytes bytes = SdkBytes.fromByteBuffer(ByteBuffer.wrap(Files.readAllBytes(new File(caminhoImagem).toPath())));
+
+           
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+    
     private void uploadToBucket(MultipartFile photo, boolean isTemp) throws Exception {
         String fileName = isTemp ? photo.getOriginalFilename() + "temp" : photo.getOriginalFilename();
 
