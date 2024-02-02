@@ -70,11 +70,6 @@
 		    <artifactId>aws-sdk-java</artifactId>
 		    <version>2.20.43</version> 
 		</dependency>
-		<dependency>
-		    <groupId>org.openpnp</groupId>
-		    <artifactId>opencv</artifactId>
-		    <version>4.9.0-0</version>
-		</dependency>
 
 	</dependencies>
 

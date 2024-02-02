@@ -1,11 +1,17 @@
 package br.com.aws.facialrecognition.service;
 
-import br.com.aws.facialrecognition.dto.FaceAuthenticationResponse;
-import br.com.aws.facialrecognition.handler.FacesNotMatchException;
-import br.com.aws.facialrecognition.handler.IdNotFoundException;
-import br.com.aws.facialrecognition.handler.MultipleFacesException;
-import br.com.aws.facialrecognition.handler.NotHumanFaceException;
-import br.com.aws.facialrecognition.handler.NotRegisteredFaceException;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.OutputStream;
+import java.math.BigDecimal;
+import java.nio.ByteBuffer;
+import java.util.Comparator;
+import java.util.List;
+import java.util.Objects;
+
+import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
+
 import com.amazonaws.services.rekognition.AmazonRekognition;
 import com.amazonaws.services.rekognition.model.Attribute;
 import com.amazonaws.services.rekognition.model.CompareFacesMatch;
@@ -24,17 +30,14 @@ import com.amazonaws.services.rekognition.model.SearchFacesByImageResult;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.model.DeleteObjectRequest;
 import com.amazonaws.services.s3.model.PutObjectRequest;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.OutputStream;
-import java.math.BigDecimal;
-import java.nio.ByteBuffer;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Objects;
+
+import br.com.aws.facialrecognition.dto.FaceAuthenticationResponse;
+import br.com.aws.facialrecognition.handler.FacesNotMatchException;
+import br.com.aws.facialrecognition.handler.IdNotFoundException;
+import br.com.aws.facialrecognition.handler.MultipleFacesException;
+import br.com.aws.facialrecognition.handler.NotHumanFaceException;
+import br.com.aws.facialrecognition.handler.NotRegisteredFaceException;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
 
 @Slf4j
 @Service

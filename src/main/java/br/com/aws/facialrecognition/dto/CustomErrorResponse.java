@@ -1,5 +1,7 @@
 package br.com.aws.facialrecognition.dto;
 
+
+
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.AllArgsConstructor;
 import lombok.Builder;

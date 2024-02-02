@@ -1,17 +1,17 @@
 package br.com.aws.facialrecognition.controller.impl;
 
-import br.com.aws.facialrecognition.controller.IFaceAuthenticationController;
-import br.com.aws.facialrecognition.dto.FaceAuthenticationResponse;
-import br.com.aws.facialrecognition.service.FaceAuthenticationService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
+
+import br.com.aws.facialrecognition.controller.IFaceAuthenticationController;
+import br.com.aws.facialrecognition.dto.FaceAuthenticationResponse;
+import br.com.aws.facialrecognition.service.FaceAuthenticationService;
 
 @RestController
 @RequestMapping(value = "/rekognition")
