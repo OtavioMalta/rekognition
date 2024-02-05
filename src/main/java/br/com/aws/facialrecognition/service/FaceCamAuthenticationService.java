@@ -72,8 +72,6 @@ import br.com.aws.facialrecognition.handler.MultipleFacesException;
 import br.com.aws.facialrecognition.handler.NotHumanFaceException;
 import br.com.aws.facialrecognition.handler.NotRegisteredFaceException;
 import lombok.extern.slf4j.Slf4j;
-import software.amazon.awssdk.services.rekognition.model.CreateFaceLivenessSessionRequest;
-
 
 
 @Slf4j

@@ -55,13 +55,13 @@ public class Cam implements CommandLineRunner  {
 
 	
     public static void main(String args[]) throws Exception {
-           SpringApplication.run(Cam.class, args);
+         // SpringApplication.run(Cam.class, args);
 
     }
 
     @Override
     public void run(String... args)   throws Exception {
-         Loader.load(opencv_core.class);
+    	/*  Loader.load(opencv_core.class);
         Loader.load(opencv_imgproc.class);
         Loader.load(opencv_highgui.class);
         Loader.load(org.bytedeco.opencv.global.opencv_core.class);
@@ -208,6 +208,6 @@ public class Cam implements CommandLineRunner  {
             // Lida com possíveis erros de IO
             e.printStackTrace();
             return null;
-        }
+        }*/
     }
 }
