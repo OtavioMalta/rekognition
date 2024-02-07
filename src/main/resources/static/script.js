@@ -23,7 +23,6 @@ Promise.all([
     faceapi.nets.faceRecognitionNet.loadFromUri('https://raw.githubusercontent.com/justadudewhohacks/face-api.js/master/weights'),
     faceapi.nets.faceExpressionNet.loadFromUri('https://raw.githubusercontent.com/justadudewhohacks/face-api.js/master/weights')
 ]).then(startVideo);
-
 function startVideo() {
     navigator.getUserMedia(
         { video: {} },
@@ -32,31 +31,39 @@ function startVideo() {
     );
 }
 
+// Variável para rastrear o último momento em que a função compareFaces foi chamada
+let lastCompareTime = 0;
 
 video.addEventListener('play', () => {
-	const canvas = faceapi.createCanvasFromMedia(video);
-	document.body.append(canvas);
-	const displaySize = { width: video.width, height: video.height };
-	faceapi.matchDimensions(canvas, displaySize);
-	setInterval(async () => {
-		const detections = await faceapi.detectAllFaces(video, 
-		new faceapi.TinyFaceDetectorOptions()).withFaceLandmarks().withFaceExpressions();
-		const resizedDetections = faceapi.resizeResults(detections, displaySize);
-		canvas.getContext('2d').clearRect(0, 0, canvas.width, canvas.height);
-		faceapi.draw.drawDetections(canvas, resizedDetections);
-		//faceapi.draw.drawFaceLandmarks(canvas, resizedDetections);
-		//faceapi.draw.drawFaceExpressions(canvas, resizedDetections);
+    const canvas = faceapi.createCanvasFromMedia(video);
+    document.body.append(canvas);
+    const displaySize = { width: video.width, height: video.height };
+    faceapi.matchDimensions(canvas, displaySize);
 
-        // verifica se alguma face foi detectada
+    setInterval(async () => {
+        const detections = await faceapi.detectAllFaces(video, new faceapi.TinyFaceDetectorOptions()).withFaceLandmarks().withFaceExpressions();
+        const resizedDetections = faceapi.resizeResults(detections, displaySize);
+        canvas.getContext('2d').clearRect(0, 0, canvas.width, canvas.height);
+        faceapi.draw.drawDetections(canvas, resizedDetections);
+
         if (resizedDetections.length > 0) {
-            lastCapturedImage = captureImage(video);
-            //Compara a imagem capturada com a imagem do banco de dados
-            //compareImages(lastCapturedImage);
-
+            console.log("Face detectada");
+            
+            const currentTime = new Date().getTime();
+            if (currentTime - lastCompareTime >= 10000) {
+                console.log("Chamando compareFaces");
+                lastCompareTime = currentTime;
+            }
         }
-	}, 1000);
-	
+    }, 1000);
 });
+
+// Função de exemplo, substitua com a sua lógica
+function compareFaces() {
+    console.log("Função compareFaces chamada");
+    // Adicione aqui a lógica para comparar faces
+}
+
 
 function captureImage(videoElement) {
     const canvas = document.createElement('canvas');
@@ -154,11 +161,11 @@ function compareImages(imageData) {
             console.error("Error comparing images:", err);
         } else {
             if (data.FaceMatches.length > 0) {
-                console.log("similarity: " + data.FaceMatches[0].Similarity + "%");
+                //exibe a similaridade entre as imagens
+                console.log("Similarity:", data.FaceMatches[0].Similarity);
                 console.log("Face matched!");
             } else {
-                
-                console.log("similarity: " + data.FaceMatches[0].Similarity + "%");
+                console.log("Similarity:", data.FaceMatches[0].Similarity);
                 console.log("Face not matched!");
             }
         }

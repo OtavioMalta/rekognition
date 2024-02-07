@@ -11,10 +11,15 @@
             align-items: center;
             height: 100vh;
             margin: 0;
+            position: relative; /* Adicionado para posicionar o círculo em relação ao body */
         }
 
         canvas {
             position: absolute;
+            /* Adicione propriedades para centralizar o círculo */
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
         }
     </style>
 </head>
@@ -23,11 +28,8 @@
     <video id="video" width="640" height="480" autoplay></video>
     
     <script defer th:src="@{/face-api.min.js}"></script>
-    <script defer th:src="@{/aws-sdk-2.410.0.min.js}"></script> 
-
+    <script defer th:src="@{/aws-sdk-2.410.0.min.js}"></script>
     <script defer th:src="@{/opencv.js}"></script>
     <script defer th:src="@{/script.js}"></script>
-
-
 </body>
 </html>
