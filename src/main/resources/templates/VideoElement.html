@@ -1,114 +1,33 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Video Streaming with OpenCV.js</title>
-    <script async src="https://docs.opencv.org/master/opencv.js" onload="onOpenCvReady();"></script>
+    <title>Video Stream</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
 
+        canvas {
+            position: absolute;
+        }
+    </style>
 </head>
 <body>
-    <video id="videoElement" width="640" height="480" autoplay></video>
+    <div id="debug"></div>
+    <video id="video" width="640" height="480" autoplay></video>
+    
+    <script defer th:src="@{/face-api.min.js}"></script>
+    <script defer th:src="@{/aws-sdk-2.410.0.min.js}"></script> 
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.js"></script>
-    <script>
-        let video;
-        let socket;
-        let faceCascade;
-        
-      
-	
-	
-	   async function onOpenCvReady() {
-    cv['onRuntimeInitialized'] = () => {
-        video = document.getElementById('videoElement');
-        socket = io.connect('http://localhost:8080');
-		 faceCascade = new cv.CascadeClassifier();
-		 faceCascade.load('https://github.com/opencv/opencv/blob/master/data/haarcascades/haarcascade_frontalface_default.xml');
-		 console.log(faceCascade.empty());
+    <script defer th:src="@{/opencv.js}"></script>
+    <script defer th:src="@{/script.js}"></script>
 
 
-		
-
-
-        // PRINTA SE FACECASCADE ESTÁ VAZIO
-        console.log(faceCascade.empty());
-
-        const stream = navigator.mediaDevices.getUserMedia({ video: true })
-            .then((stream) => {
-                video.srcObject = stream;
-                const cap = new cv.VideoCapture(video);
-
-                function processAndSendFrame() {
-                    const frame = new cv.Mat(video.height, video.width, cv.CV_8UC4);
-                    cap.read(frame);
-
-                    // Processar o quadro usando OpenCV.js
-                    const processedFrame = processFrame(frame);
-
-                    // Enviar o quadro processado para o servidor
-                    const imageData = new ImageData(new Uint8ClampedArray(processedFrame.data), video.width, video.height);
-                    const canvas = document.createElement('canvas');
-                    canvas.width = video.width;
-                    canvas.height = video.height;
-                    const context = canvas.getContext('2d');
-                    context.putImageData(imageData, 0, 0);
-                    const processedFrameDataUrl = canvas.toDataURL('image/jpeg');
-                    const processedFrameData = dataURLToArrayBuffer(processedFrameDataUrl);
-                    socket.emit('videoFrame', processedFrameData);
-
-                    // Limpar a memória alocada pelo OpenCV.js
-                    frame.delete();
-
-                    // Chamar a próxima iteração
-                    requestAnimationFrame(processAndSendFrame);
-                }
-
-                processAndSendFrame();
-            });
-    };
-}
-
-
-        function processFrame(frame) {
-		    // Convert the frame to grayscale
-		    const grayFrame = new cv.Mat();
-		    cv.cvtColor(frame, grayFrame, cv.COLOR_RGBA2GRAY);
-			// IMPRIME OLA NO CONSOLE
-			console.log('Olá');
-
-		    // Detect faces in the grayscale frame
-		    const faces = new cv.RectVector();
-		    const faceSize = new cv.Size(80, 80); // Adjust the size based on your requirements
-console.log('Número de faces detectadas:', faces.size());
-
-
-		    faceCascade.detectMultiScale(grayFrame, faces, 1.1, 3, 0, faceSize, faceSize);
-		
-		    // Draw rectangles around detected faces
-		    for (let i = 0; i < faces.size(); i++) {
-		        const faceRect = faces.get(i);
-		        const point1 = new cv.Point(faceRect.x, faceRect.y);
-		        const point2 = new cv.Point(faceRect.x + faceRect.width, faceRect.y + faceRect.height);
-		        cv.rectangle(frame, point1, point2, [255, 0, 0, 255], 2); // Blue rectangle
-		    }
-		
-		    // Release the resources
-		    grayFrame.delete();
-		
-		    return frame;
-		}
-
-
-        function dataURLToArrayBuffer(dataURL) {
-            const binaryString = window.atob(dataURL.split(',')[1]);
-            const arrayBuffer = new ArrayBuffer(binaryString.length);
-            const uint8Array = new Uint8Array(arrayBuffer);
-            for (let i = 0; i < binaryString.length; i++) {
-                uint8Array[i] = binaryString.charCodeAt(i);
-            }
-            return arrayBuffer;
-        }
-    </script>
 </body>
 </html>

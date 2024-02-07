@@ -105,7 +105,7 @@ public class FaceCamAuthenticationService {
         } catch (Exception e) {
             log.error("Erro ao criar collection");
             throw e;
-        }
+        } 
 
         rekognitionClient.indexFaces(new IndexFacesRequest()
                 .withImage(new Image()

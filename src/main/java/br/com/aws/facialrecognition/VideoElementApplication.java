@@ -76,7 +76,7 @@ class VideoController {
        //corrige o erro getDefaultScreenDevice
        System.setProperty("java.awt.headless", "false");
        
-       CanvasFrame cFrame = new CanvasFrame("Reconhecimento.CAM", CanvasFrame.getDefaultGamma() / camera.getGamma());
+       CanvasFrame cFrame = new CanvasFrame("Reconhecimento.CAM2", CanvasFrame.getDefaultGamma() / camera.getGamma());
        Frame frameCapturado = null;
        Mat imagemColorida = new Mat();
 

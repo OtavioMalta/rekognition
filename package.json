@@ -1,0 +1,6 @@
+{
+  "dependencies": {
+    "aws-sdk": "^2.1551.0",
+    "buffer": "^6.0.3"
+  }
+}
