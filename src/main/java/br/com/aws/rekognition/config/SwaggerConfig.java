@@ -1,4 +1,4 @@
-package br.com.aws.facialrecognition.config;
+package br.com.aws.rekognition.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -13,9 +13,9 @@ public class SwaggerConfig {
     public OpenAPI myOpenAPI() {
 
         Info info = new Info()
-                .title("Facial Recognition Api")
+                .title("Rekognition")
                 .version("1.0")
-                .description("Facial Recognition");
+                .description("Rekognition");
 
         return new OpenAPI().info(info);
     }

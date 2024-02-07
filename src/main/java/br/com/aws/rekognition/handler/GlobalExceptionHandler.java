@@ -1,6 +1,5 @@
-package br.com.aws.facialrecognition.handler;
+package br.com.aws.rekognition.handler;
 
-import br.com.aws.facialrecognition.dto.CustomErrorResponse;
 import jakarta.annotation.Resource;
 import org.springframework.context.MessageSource;
 import org.springframework.http.HttpHeaders;
@@ -12,6 +11,8 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
+import br.com.aws.rekognition.dto.ErrorResponse;
+
 @RestControllerAdvice
 public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
@@ -21,7 +22,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     @ExceptionHandler({ErrorCodeException.class})
     private ResponseEntity<Object> handleCodigoDeErro(Exception e, WebRequest request) {
         ErrorCodeException errorCodeException = (ErrorCodeException) e;
-        CustomErrorResponse error = new CustomErrorResponse();
+        ErrorResponse error = new ErrorResponse();
         error.setError(e.getMessage());
         error.setStatus(HttpStatus.BAD_REQUEST.value());
 

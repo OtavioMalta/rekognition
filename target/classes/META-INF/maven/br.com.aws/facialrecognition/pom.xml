@@ -39,6 +39,14 @@
 		    <artifactId>spring-boot-starter-thymeleaf</artifactId>
 		</dependency>
 
+		<!-- https://mvnrepository.com/artifact/org.springframework/spring-test -->
+		<dependency>
+		    <groupId>org.springframework</groupId>
+		    <artifactId>spring-test</artifactId>
+		    <scope>test</scope>
+		</dependency>
+
+
 
 		<dependency>
 			<groupId>com.amazonaws</groupId>

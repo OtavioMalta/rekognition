@@ -1,4 +1,4 @@
-package br.com.aws.facialrecognition.enums;
+package br.com.aws.rekognition.enums;
 
 public enum InternalTypeErrorCodesEnum {
 
@@ -25,6 +25,6 @@ public enum InternalTypeErrorCodesEnum {
 
     @Override
     public String toString() {
-        return String.format("Fault code: %s = %s.", getMessage());
+        return String.format("Error code: %s = %s.", getMessage());
     }
 }

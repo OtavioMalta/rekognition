@@ -1,178 +1,120 @@
 
-
-// Configure AWS SDK
-AWS.config.update({
-  region: 'us-east-2',  // Replace with your AWS region, e.g., 'us-east-1'
-  accessKeyId: 'AKIAXLZC4UQFHFKM3PHN',  // Replace with your AWS access key ID
-  secretAccessKey: '1L6BoMTqwEPa6vIJc9GCK5zGfUv94rs72iuoWyCm'  // Replace with your AWS secret access key
-});
-
-const BUCKET_NAME = 'atendebucket'; // Replace with your S3 bucket name
-const SIMILARITY_PERCENTAGE = 90; // Set your desired similarity threshold
-
-const rekognition = new AWS.Rekognition();
-
-const s3 = new AWS.S3();
-
-const video = document.getElementById('video');
-
-
-Promise.all([
-    faceapi.nets.tinyFaceDetector.loadFromUri('https://raw.githubusercontent.com/justadudewhohacks/face-api.js/master/weights'),
-    faceapi.nets.faceLandmark68Net.loadFromUri('https://raw.githubusercontent.com/justadudewhohacks/face-api.js/master/weights'),
-    faceapi.nets.faceRecognitionNet.loadFromUri('https://raw.githubusercontent.com/justadudewhohacks/face-api.js/master/weights'),
-    faceapi.nets.faceExpressionNet.loadFromUri('https://raw.githubusercontent.com/justadudewhohacks/face-api.js/master/weights')
-]).then(startVideo);
-function startVideo() {
-    navigator.getUserMedia(
-        { video: {} },
-        stream => video.srcObject = stream,
-        err => console.error(err)
-    );
-}
-
-// Variável para rastrear o último momento em que a função compareFaces foi chamada
-let lastCompareTime = 0;
-
-video.addEventListener('play', () => {
-    const canvas = faceapi.createCanvasFromMedia(video);
-    document.body.append(canvas);
-    const displaySize = { width: video.width, height: video.height };
-    faceapi.matchDimensions(canvas, displaySize);
-
-    setInterval(async () => {
-        const detections = await faceapi.detectAllFaces(video, new faceapi.TinyFaceDetectorOptions()).withFaceLandmarks().withFaceExpressions();
-        const resizedDetections = faceapi.resizeResults(detections, displaySize);
-        canvas.getContext('2d').clearRect(0, 0, canvas.width, canvas.height);
-        faceapi.draw.drawDetections(canvas, resizedDetections);
-
-        if (resizedDetections.length > 0) {
-            console.log("Face detectada");
-            
-            const currentTime = new Date().getTime();
-            if (currentTime - lastCompareTime >= 10000) {
-                console.log("Chamando compareFaces");
-                lastCompareTime = currentTime;
+document.addEventListener('DOMContentLoaded', function () {
+    // Configure AWS SDK
+    AWS.config.update({
+        region: 'us-east-2', 
+        accessKeyId: 'AKIAXLZC4UQFHFKM3PHN',  
+        secretAccessKey: '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'
+    });
+    
+    const BUCKET_NAME = 'atendebucket'; 
+    const id = 'otavio';
+    const Intervalo_captura = 1000;
+    const SIMILARITY_PERCENTAGE = 90;
+    const rekognition = new AWS.Rekognition();
+    const s3 = new AWS.S3();
+    
+    const video = document.getElementById('video');
+    
+    Promise.all([
+        faceapi.nets.tinyFaceDetector.loadFromUri('https://raw.githubusercontent.com/justadudewhohacks/face-api.js/master/weights'),
+        faceapi.nets.faceLandmark68Net.loadFromUri('https://raw.githubusercontent.com/justadudewhohacks/face-api.js/master/weights'),
+        faceapi.nets.faceRecognitionNet.loadFromUri('https://raw.githubusercontent.com/justadudewhohacks/face-api.js/master/weights'),
+        faceapi.nets.faceExpressionNet.loadFromUri('https://raw.githubusercontent.com/justadudewhohacks/face-api.js/master/weights')
+    ]).then(startVideo);
+    
+    function startVideo() {
+        navigator.getUserMedia(
+            { video: {} },
+            stream => video.srcObject = stream,
+            err => console.error(err)
+        );
+    }
+    
+    let lastCompareTime = 0;
+    
+    // Inicia a detecção de faces
+    video.addEventListener('play', () => {
+        const canvas = faceapi.createCanvasFromMedia(video);
+        document.body.append(canvas);
+        const displaySize = { width: video.width, height: video.height };
+        faceapi.matchDimensions(canvas, displaySize);
+    
+        setInterval(async () => {
+            const detections = await faceapi.detectAllFaces(video, new faceapi.TinyFaceDetectorOptions()).withFaceLandmarks().withFaceExpressions();
+            const resizedDetections = faceapi.resizeResults(detections, displaySize);
+            canvas.getContext('2d').clearRect(0, 0, canvas.width, canvas.height);
+            faceapi.draw.drawDetections(canvas, resizedDetections);
+    
+            if (resizedDetections.length > 0) {
+                console.log("Face detectada");
+                const currentTime = new Date().getTime();
+                if (currentTime - lastCompareTime >= 10000) {
+                    compareImages(captureImage(video));
+                    lastCompareTime = currentTime;
+                }
             }
+        }, Intervalo_captura); // Intervalo para detecção de faces
+    });
+    
+    // Função auxiliar para capturar imagem do vídeo 
+    function captureImage(videoElement) {
+        const canvas = document.createElement('canvas');
+        canvas.width = videoElement.width;
+        canvas.height = videoElement.height;
+        const ctx = canvas.getContext('2d');
+        ctx.drawImage(videoElement, 0, 0, canvas.width, canvas.height);
+        return canvas.toDataURL('image/png').replace(/^data:image\/png;base64,/, '');
+    }
+    
+    // Função auxiliar para converter base64 para arraybuffer
+    function base64ToArrayBuffer(base64) {
+        const binaryString = atob(base64);
+        const bytes = new Uint8Array(binaryString.length);
+        for (let i = 0; i < binaryString.length; i++) {
+            bytes[i] = binaryString.charCodeAt(i);
         }
-    }, 1000);
-});
-
-// Função de exemplo, substitua com a sua lógica
-function compareFaces() {
-    console.log("Função compareFaces chamada");
-    // Adicione aqui a lógica para comparar faces
-}
-
-
-function captureImage(videoElement) {
-    const canvas = document.createElement('canvas');
-    canvas.width = videoElement.width;
-    canvas.height = videoElement.height;
-    const ctx = canvas.getContext('2d');
-    ctx.drawImage(videoElement, 0, 0, canvas.width, canvas.height);
-
-    // Converte o canvas para o formato de dados da imagem
-    return canvas.toDataURL('image/png').replace(/^data:image\/png;base64,/, '');
-}
-
-
-function saveImage(videoElement, imageName) {
-    const canvas = document.createElement('canvas');
-    canvas.width = videoElement.width;
-    canvas.height = videoElement.height;
-    const ctx = canvas.getContext('2d');
-    ctx.drawImage(videoElement, 0, 0, canvas.width, canvas.height);
-
-    // Converte o canvas para o formato de dados da imagem
-    const imageData = canvas.toDataURL('image/png').replace(/^data:image\/png;base64,/, '');
-
-    // Cria um objeto Blob representando a imagem
-    const blob = base64ToBlob(imageData, 'image/png');
-
-    // Cria um link para download e simula um clique para baixar a imagem
-    const link = document.createElement('a');
-    link.href = window.URL.createObjectURL(blob);
-    link.download = `${imageName}.png`;
-    link.click();
-}
-
-// Função auxiliar para converter base64 para Blob
-function base64ToBlob(base64, mimeType) {
-    const byteString = atob(base64);
-    const arrayBuffer = new ArrayBuffer(byteString.length);
-    const intArray = new Uint8Array(arrayBuffer);
-
-    for (let i = 0; i < byteString.length; i++) {
-        intArray[i] = byteString.charCodeAt(i);
+        return bytes.buffer;
     }
-
-    return new Blob([intArray], { type: mimeType });
-}
-
-// Função auxiliar para converter base64 para arraybuffer
-function base64ToArrayBuffer(base64) {
-    const binaryString = atob(base64);
-    const bytes = new Uint8Array(binaryString.length);
-    for (let i = 0; i < binaryString.length; i++) {
-        bytes[i] = binaryString.charCodeAt(i);
-    }
-    return bytes.buffer;
-}
-
-
-
-
-
-function deleteObject(bucket, key) {
-    return new Promise((resolve, reject) => {
+    
+    // Função para comparar imagens
+    function compareImages(imageData) {
         const params = {
-            Bucket: bucket,
-            Key: key
+            SourceImage: {
+                Bytes: base64ToArrayBuffer(imageData)
+            },
+            TargetImage: {
+                S3Object: {
+                    Bucket: BUCKET_NAME,
+                    Name: id + '.jpg'
+                }
+            },
+            SimilarityThreshold: SIMILARITY_PERCENTAGE
+    
         };
-        s3.deleteObject(params, (err, data) => {
+    
+        rekognition.compareFaces(params, (err, data) => {
             if (err) {
-                reject(err);
+                console.error("Erro ao comparar imagens", err);
             } else {
-                resolve(data);
+                if (data.FaceMatches.length > 0 && data.FaceMatches[0].Similarity >= SIMILARITY_PERCENTAGE) {
+                    console.log("Similaridade:", data.FaceMatches[0].Similarity);
+                    console.log("Face corresponde!");
+                    // tirar o video, parar a detecção de faces e exibir a mensagem de sucesso com a porcentagem de similaridade
+                    video.srcObject.getVideoTracks().forEach(track => track.stop());
+                    video.remove();
+                    document.getElementById('success').style.display = 'block';
+                    document.getElementById('similaridade').innerText = data.FaceMatches[0].Similarity + '%';
+                } else if (data.FaceMatches.length > 0) {
+                    console.log("Similaridade:", data.FaceMatches[0].Similarity);
+                    console.log("Face não corresponde!");
+                } else {
+                    console.log("Nenhuma face correspondente encontrada");
+                }
             }
         });
-    });
-}
-
-
-function compareImages(imageData) {
-    const params = {
-        SourceImage: {
-            Bytes: base64ToArrayBuffer(imageData)
-        },
-        TargetImage: {
-            S3Object: {
-                Bucket: BUCKET_NAME,
-                Name: 'otavio.jpg'
-            }
-        },
-        SimilarityThreshold: SIMILARITY_PERCENTAGE
-
-    };
-
-    rekognition.compareFaces(params, (err, data) => {
-        if (err) {
-            console.error("Error comparing images:", err);
-        } else {
-            if (data.FaceMatches.length > 0) {
-                //exibe a similaridade entre as imagens
-                console.log("Similarity:", data.FaceMatches[0].Similarity);
-                console.log("Face matched!");
-            } else {
-                console.log("Similarity:", data.FaceMatches[0].Similarity);
-                console.log("Face not matched!");
-            }
-        }
-    });
-}
-
-
+    }
+});
 
 /*
 function doesImageExist(id) {

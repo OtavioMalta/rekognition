@@ -1,6 +1,6 @@
-package br.com.aws.facialrecognition.handler;
+package br.com.aws.rekognition.handler;
 
-import br.com.aws.facialrecognition.enums.InternalTypeErrorCodesEnum;
+import br.com.aws.rekognition.enums.InternalTypeErrorCodesEnum;
 
 public class ErrorCodeException extends Exception{
 

@@ -1,4 +1,4 @@
-package br.com.aws.facialrecognition.config;
+package br.com.aws.rekognition.config;
 
 import com.amazonaws.auth.DefaultAWSCredentialsProviderChain;
 import com.amazonaws.regions.Regions;

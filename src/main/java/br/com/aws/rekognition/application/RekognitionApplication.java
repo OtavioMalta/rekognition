@@ -1,4 +1,4 @@
-package br.com.aws.facialrecognition.cam;
+package br.com.aws.rekognition.application;
 
 
 import static org.bytedeco.opencv.global.opencv_imgcodecs.imwrite;
@@ -42,40 +42,37 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.web.multipart.MultipartFile;
 
-import br.com.aws.facialrecognition.dto.FaceAuthenticationResponse;
-import br.com.aws.facialrecognition.service.FaceCamAuthenticationService;
+import br.com.aws.rekognition.dto.RekognitionResponse;
+import br.com.aws.rekognition.service.RekognitionService;
 
 @SpringBootApplication
-@ComponentScan("br.com.aws.facialrecognition.service")
-@ComponentScan("br.com.aws.facialrecognition.config")
-public class Cam implements CommandLineRunner  {
+@ComponentScan("br.com.aws.rekognition.service")
+@ComponentScan("br.com.aws.rekognition.config")
+public class RekognitionApplication implements CommandLineRunner  {
 	
      @Autowired
-    private FaceCamAuthenticationService faceCamAuthenticationService;
-
+    private RekognitionService rekognitionService;
 	
     public static void main(String args[]) throws Exception {
-         // SpringApplication.run(Cam.class, args);
-
+         SpringApplication.run(RekognitionApplication.class, args);
     }
 
     @Override
     public void run(String... args)   throws Exception {
-    	/*  Loader.load(opencv_core.class);
+    	Loader.load(opencv_core.class);
         Loader.load(opencv_imgproc.class);
         Loader.load(opencv_highgui.class);
         Loader.load(org.bytedeco.opencv.global.opencv_core.class);
 
-       OpenCVFrameConverter.ToMat converteMat = new OpenCVFrameConverter.ToMat();
+        OpenCVFrameConverter.ToMat converteMat = new OpenCVFrameConverter.ToMat();
         OpenCVFrameGrabber camera = new OpenCVFrameGrabber(0);
-        String[] pessoas = {"", "Jones", "Gabriel"};
         camera.start();
-        CascadeClassifier detectorFace = new CascadeClassifier("src\\main\\resources\\haarcascade_frontalface_alt.xml");
+        CascadeClassifier detectorFace = new CascadeClassifier("src\\main\\resources\\static\\haarcascade_frontalface_default.xml");
 
-        //corrige o erro getDefaultScreenDevice
+        //Corrige o erro getDefaultScreenDevice
         System.setProperty("java.awt.headless", "false");
         
-        CanvasFrame cFrame = new CanvasFrame("Reconhecimento.CAM", CanvasFrame.getDefaultGamma() / camera.getGamma());
+        CanvasFrame cFrame = new CanvasFrame("Rekognition", CanvasFrame.getDefaultGamma() / camera.getGamma());
         Frame frameCapturado = null;
         Mat imagemColorida = new Mat();
 
@@ -86,10 +83,7 @@ public class Cam implements CommandLineRunner  {
         Scanner cadastro = new Scanner(System.in);
         String idPessoa = cadastro.nextLine();
 
-        MultipartFile fotoOriginal = faceCamAuthenticationService.downloadImage(idPessoa);
         while ((frameCapturado = camera.grab()) != null) {
-            //converte imagem da camera em jpg
-
             imagemColorida = converteMat.convert(frameCapturado);
             Mat imagemCinza = new Mat();
             cvtColor(imagemColorida, imagemCinza, COLOR_BGRA2GRAY);
@@ -101,54 +95,42 @@ public class Cam implements CommandLineRunner  {
                 rectangle(imagemColorida, dadosFace, new Scalar(115,25,230,0),2,0,0);
                 Mat faceCapturada = new Mat(imagemCinza, dadosFace);
                 
+                // Se a face capturada for menor que 160x160, pula para a próxima
                 if ((faceCapturada.size(0) == 160) || (faceCapturada.size(1) == 160)){
                     continue;
                 }  
+                
                 resize(faceCapturada, faceCapturada, new Size(160,160));
                 
                 int x = Math.max(dadosFace.tl().x() - 10, 0);
                 int y = Math.max(dadosFace.tl().y() - 10, 0);
                 
-                //puttext em vermelho
                 putText(imagemColorida, "", new Point(x, y), FONT_HERSHEY_PLAIN, 1.4, new Scalar(255,0,0,0));
-                // aumenta a espessura da linha
                 
                 if (System.currentTimeMillis() - lastCaptureTime >= captureInterval) {
-                    
                     resize(faceCapturada, faceCapturada, new Size(160,160));
-
                     imwrite("src\\fotos\\"+idPessoa +".jpg", faceCapturada);
 
                     // Pega a foto salvada
                     BufferedImage img = ImageIO.read(new File("src\\fotos\\"+idPessoa +".jpg"));
                     MultipartFile fotoCapturada = carregarImagemComoMultipartFile("src\\fotos\\"+idPessoa+".jpg");
-                    
-                    //if(faceCamAuthenticationService.isFace(multipartFile.getBytes())) {
-                        FaceAuthenticationResponse response = faceCamAuthenticationService.compareFaces(fotoCapturada, fotoOriginal);
-                        // apaga a foto
-                        Files.deleteIfExists(Paths.get("src\\fotos\\"+idPessoa +".jpg"));
-                        if (response == null) {
-                        	System.out.println("Rosto não encontrado");
-                        } else if(response.getSimilarityPercentage().doubleValue() > 90) {
-                            System.out.println("Rosto reconhecido");
-                            // encerra a camera
-                            cFrame.dispose();
-                            camera.stop();
-                            // encerra a aplicação
-                            System.exit(0);
-                            
-                        } else {
-                            System.out.println("Rosto não reconhecido");
-                        }
-                    
-                    
-                    System.out.println("Foto src\\fotos\\"+idPessoa +".jpg capturada\n");
+                   
+                    RekognitionResponse response = rekognitionService.comparar(fotoCapturada, idPessoa);
+
+                    // apaga a foto
+                    Files.deleteIfExists(Paths.get("src\\fotos\\"+idPessoa +".jpg"));
+                    if (response == null) {
+                        System.out.println("Rosto não encontrado");
+                    } else if(response.getSimilaridade().doubleValue() > 90) {
+                        System.out.println("Rosto reconhecido");
+                        cFrame.dispose();
+                        camera.stop();
+                        System.exit(0);
+                    } else {
+                        System.out.println("Rosto não reconhecido");
+                    }
                     lastCaptureTime = System.currentTimeMillis();
                 }
-                
-                
-                
-            
             }
             if (cFrame.isVisible()) {
                 cFrame.showImage(frameCapturado);
@@ -157,12 +139,11 @@ public class Cam implements CommandLineRunner  {
         cFrame.dispose();
         camera.stop();
     }
-      private static MultipartFile carregarImagemComoMultipartFile(String caminho) {
+    
+    private static MultipartFile carregarImagemComoMultipartFile(String caminho) {
         try {
-            // Lê o conteúdo do arquivo como bytes
             byte[] bytes = Files.readAllBytes(Paths.get(caminho));
 
-            // Cria um MultipartFile a partir dos bytes
             return new MultipartFile() {
                 @Override
                 public String getName() {
@@ -205,9 +186,8 @@ public class Cam implements CommandLineRunner  {
                 }
             };
         } catch (IOException e) {
-            // Lida com possíveis erros de IO
             e.printStackTrace();
             return null;
-        }*/
+        }
     }
 }

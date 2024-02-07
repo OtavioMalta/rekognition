@@ -1,4 +1,4 @@
-package br.com.aws.facialrecognition.dto;
+package br.com.aws.rekognition.dto;
 
 
 
@@ -13,7 +13,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class CustomErrorResponse {
+public class ErrorResponse {
 
     private int status;
     private String error;
