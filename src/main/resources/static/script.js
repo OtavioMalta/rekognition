@@ -90,7 +90,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 }
             },
             SimilarityThreshold: SIMILARITY_PERCENTAGE
-    
+
         };
     
         rekognition.compareFaces(params, (err, data) => {
@@ -115,97 +115,3 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     }
 });
-
-/*
-function doesImageExist(id) {
-    return new Promise((resolve, reject) => {
-        const params = {
-            Bucket: BUCKET_NAME,
-            Key: id + '.jpg'
-        };
-
-        s3.headObject(params, (err, data) => {
-            if (err) {
-                console.error("Error checking image existence:", err);
-                if (err.code === 'NotFound') {
-                    resolve(false);
-                } else {
-                    reject(err);
-                }
-            } else {
-                resolve(true);
-            }
-        });
-    });
-}
-
-
-function downloadFromBucket(id) {
-        return new Promise((resolve, reject) => {
-            const params = {
-                Bucket: BUCKET_NAME,
-                Key: id + '.jpg'
-            };
-            s3.getObject(params, (err, data) => {
-                if (err) {
-                    reject(err);
-                } else {
-                    resolve(data.Body);
-                }
-            });
-        });
-    }
-
-function uploadToBucket(photo, isTemp) {
-	return new Promise((resolve, reject) => {
-		const params = {
-			Bucket: BUCKET_NAME,
-			Key: photo.name + (isTemp ? 'temp' : '') + '.jpg',
-			Body: photo
-		};
-		s3.upload(params, (err, data) => {
-			if (err) {
-				reject(err);
-			} else {
-				resolve(data);
-			}
-		});
-	});
-}
-
-
-/*const video = document.getElementById('video');
-
-Promise.all([
-    faceapi.nets.tinyFaceDetector.loadFromUri('https://raw.githubusercontent.com/justadudewhohacks/face-api.js/master/weights'),
-    faceapi.nets.faceLandmark68Net.loadFromUri('https://raw.githubusercontent.com/justadudewhohacks/face-api.js/master/weights'),
-    faceapi.nets.faceRecognitionNet.loadFromUri('https://raw.githubusercontent.com/justadudewhohacks/face-api.js/master/weights'),
-    faceapi.nets.faceExpressionNet.loadFromUri('https://raw.githubusercontent.com/justadudewhohacks/face-api.js/master/weights')
-]).then(startVideo);
-
-function startVideo() {
-    navigator.getUserMedia(
-        { video: {} },
-        stream => video.srcObject = stream,
-        err => console.error(err)
-    );
-}
-
-
-video.addEventListener('play', () => {
-	const canvas = faceapi.createCanvasFromMedia(video);
-	document.body.append(canvas);
-	const displaySize = { width: video.width, height: video.height };
-	faceapi.matchDimensions(canvas, displaySize);
-	setInterval(async () => {
-		const detections = await faceapi.detectAllFaces(video, 
-		new faceapi.TinyFaceDetectorOptions()).withFaceLandmarks().withFaceExpressions();
-		const resizedDetections = faceapi.resizeResults(detections, displaySize);
-		canvas.getContext('2d').clearRect(0, 0, canvas.width, canvas.height);
-		faceapi.draw.drawDetections(canvas, resizedDetections);
-		//faceapi.draw.drawFaceLandmarks(canvas, resizedDetections);
-		//faceapi.draw.drawFaceExpressions(canvas, resizedDetections);
-		
-	}, 100);
-	
-});*/

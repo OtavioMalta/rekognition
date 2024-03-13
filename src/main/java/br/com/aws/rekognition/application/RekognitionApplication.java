@@ -1,6 +1,5 @@
 package br.com.aws.rekognition.application;
 
-
 import static org.bytedeco.opencv.global.opencv_imgcodecs.imwrite;
 import static org.bytedeco.opencv.global.opencv_imgproc.COLOR_BGRA2GRAY;
 import static org.bytedeco.opencv.global.opencv_imgproc.FONT_HERSHEY_PLAIN;
@@ -45,7 +44,7 @@ import org.springframework.web.multipart.MultipartFile;
 import br.com.aws.rekognition.dto.RekognitionResponse;
 import br.com.aws.rekognition.service.RekognitionService;
 
-@SpringBootApplication
+//@SpringBootApplication
 @ComponentScan("br.com.aws.rekognition.service")
 @ComponentScan("br.com.aws.rekognition.config")
 public class RekognitionApplication implements CommandLineRunner  {
