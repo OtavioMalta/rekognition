@@ -1,13 +1,12 @@
-
 document.addEventListener('DOMContentLoaded', function () {
     // Configure AWS SDK
     AWS.config.update({
         region: 'us-east-2', 
-        accessKeyId: 'AKIAXLZC4UQFHFKM3PHN',  
-        secretAccessKey: '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'
+        accessKeyId: '',  
+        secretAccessKey: ''
     });
     
-    const BUCKET_NAME = 'atendebucket'; 
+    const BUCKET_NAME = ''; 
     const id = 'otavio';
     const Intervalo_captura = 1000;
     const SIMILARITY_PERCENTAGE = 90;
