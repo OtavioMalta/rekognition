@@ -10,7 +10,7 @@ document.addEventListener('DOMContentLoaded', function () {
     const id = 'otavio';
     const Intervalo_captura = 1000;
     const SIMILARITY_PERCENTAGE = 90;
-    const rekognition = new AWS.Rekognition();
+    const recognition = new AWS.rekognition();
     const s3 = new AWS.S3();
     
     const video = document.getElementById('video');
@@ -92,7 +92,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
         };
     
-        rekognition.compareFaces(params, (err, data) => {
+        recognition.compareFaces(params, (err, data) => {
             if (err) {
                 console.error("Erro ao comparar imagens", err);
             } else {

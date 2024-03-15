@@ -57,7 +57,7 @@ document.addEventListener('DOMContentLoaded', function () {
         formData.append('foto', dataURItoBlob(imageData.foto), 'image.jpeg');
         formData.append('id', imageData.id);
 
-        fetch('http://localhost:8080/rekognition/comparar', {
+        fetch('http://localhost:8080/recognition/comparar', {
             method: 'POST',
             body: formData
         })
@@ -85,17 +85,16 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     }
 
-// Função auxiliar para converter a imagem em Blob
-function dataURItoBlob(dataURI) {
-    const byteString = atob(dataURI.split(',')[1]);
-    const mimeString = dataURI.split(',')[0].split(':')[1].split(';')[0];
-    const ab = new ArrayBuffer(byteString.length);
-    const ia = new Uint8Array(ab);
-    for (let i = 0; i < byteString.length; i++) {
-        ia[i] = byteString.charCodeAt(i);
+    // Função auxiliar para converter a imagem em Blob
+    function dataURItoBlob(dataURI) {
+        const byteString = atob(dataURI.split(',')[1]);
+        const mimeString = dataURI.split(',')[0].split(':')[1].split(';')[0];
+        const ab = new ArrayBuffer(byteString.length);
+        const ia = new Uint8Array(ab);
+        for (let i = 0; i < byteString.length; i++) {
+            ia[i] = byteString.charCodeAt(i);
+        }
+        const blob = new Blob([ab], { type: mimeString });
+        return blob;
     }
-    const blob = new Blob([ab], { type: mimeString });
-    return blob;
-}
-
 });
